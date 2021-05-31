@@ -86,29 +86,51 @@ public class BookDirectoryTestSuite {
     }
 
     @Test
-    void theListBooksWithConditionHowManyBorrowed() {
+    void theListBooksWithConditionAnyBorrowed() {
         //Given
         LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
         BookLibrary bookLibrary = new BookLibrary((libraryDatabaseMock));
-        List<LibraryUser> resultListOfUsers = new ArrayList<>();
-        LibraryUser libraryUser1 = new LibraryUser("Tom", "Ford", "5484213215");
-        LibraryUser libraryUser2 = new LibraryUser("Jack", "Smith", "7866565931");
-        LibraryUser libraryUser3 = new LibraryUser("Stella", "Black", "6258232663");
+        LibraryUser libraryUser = new LibraryUser("Tom", "Ford", "5484213215");
         List<Book> resultListOf0BorrowedBook = new ArrayList<Book>();
-        List<Book> resultListOf1BorrowedBook = generateListOfNBooks(1);
-        List<Book> resultListOf5BorrowedBooks = generateListOfNBooks(5);
-        when(libraryDatabaseMock.listBooksInHandsOf(libraryUser1)).thenReturn(resultListOf0BorrowedBook);
-        when(libraryDatabaseMock.listBooksInHandsOf(libraryUser2)).thenReturn(resultListOf1BorrowedBook);
-        when(libraryDatabaseMock.listBooksInHandsOf(libraryUser3)).thenReturn(resultListOf5BorrowedBooks);
+        when(libraryDatabaseMock.listBooksInHandsOf(libraryUser)).thenReturn(resultListOf0BorrowedBook);
 
         //When
-        List<Book> theListOfBorrowed0 = bookLibrary.listBooksInHandsOf(libraryUser1);
-        List<Book> theListOfBorrowed1 = bookLibrary.listBooksInHandsOf(libraryUser2);
-        List<Book> theListOfBorrowed5 = bookLibrary.listBooksInHandsOf(libraryUser3);
+        List<Book> theListOfBorrowed0 = bookLibrary.listBooksInHandsOf(libraryUser);
 
         //Then
-        assertEquals(0, theListOfBorrowed0.size());
-        assertEquals(1, theListOfBorrowed1.size());
-        assertEquals(5, theListOfBorrowed5.size());
+        assertEquals(resultListOf0BorrowedBook.size(), theListOfBorrowed0.size());
+    }
+
+    @Test
+    void theListBooksWithCondition1Borrowed() {
+        //Given
+        LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
+        BookLibrary bookLibrary = new BookLibrary(libraryDatabaseMock);
+        LibraryUser libraryUser = new LibraryUser("Tom", "Ford", "5484213215");
+        List<Book> resultListOf1BorrowedBook = generateListOfNBooks(1);
+        when(libraryDatabaseMock.listBooksInHandsOf(libraryUser)).thenReturn(resultListOf1BorrowedBook);
+
+        //When
+        List<Book> theListOfBorrowed1 = bookLibrary.listBooksInHandsOf(libraryUser);
+
+        //Then
+        assertEquals(resultListOf1BorrowedBook.size(), theListOfBorrowed1.size());
+
+    }
+
+    @Test
+    void theListBooksWithCondition5Borrowed() {
+        //Given
+        LibraryDatabase libraryDatabaseMock = mock(LibraryDatabase.class);
+        BookLibrary bookLibrary = new BookLibrary((libraryDatabaseMock));
+        LibraryUser libraryUser = new LibraryUser("Tom", "Ford", "5484213215");
+        List<Book> resultListOf5BorrowedBooks = generateListOfNBooks(5);
+        when(libraryDatabaseMock.listBooksInHandsOf(libraryUser)).thenReturn(resultListOf5BorrowedBooks);
+
+        //When
+        List<Book> theListOfBorrowed5 = bookLibrary.listBooksInHandsOf(libraryUser);
+
+        //Then
+        assertEquals(resultListOf5BorrowedBooks.size(), theListOfBorrowed5.size());
     }
 }

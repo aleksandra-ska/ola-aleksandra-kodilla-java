@@ -21,16 +21,7 @@ public class BookLibrary {
     }
     public List<Book> listBooksInHandsOf(LibraryUser libraryUser) {
         List<Book> rentBookList = new ArrayList<>();
-        Book book1 = new Book("Book", "Author", 2000);
-        rentBookList.add(book1);
-        List<LibraryUser> usersList = new ArrayList<>();
-        if(rentBookList.size() == 0 ) {
-            System.out.println("User: " + usersList.get(usersList.size()) + " zero books");
-        }else if (rentBookList.size() == 1) {
-            System.out.println("User:" + usersList.get(usersList.size()) + " borrowed:" + rentBookList.get(usersList.size()));
-        }else if (rentBookList.size() == 5) {
-            System.out.println("User:" + usersList.get(usersList.size()) + " borrowed:" + rentBookList.get(usersList.size()));
-        }
+        rentBookList = libraryDatabase.listBooksInHandsOf(libraryUser);
         return rentBookList;
     }
 }
