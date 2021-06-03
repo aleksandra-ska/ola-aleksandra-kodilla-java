@@ -1,30 +1,24 @@
 package com.kodilla.stream;
 
-import com.kodilla.stream.beautifier.PoemBeautifier;
-import com.kodilla.stream.beautifier.PoemDecorator;
+import com.kodilla.stream.forumuser.Forum;
+import com.kodilla.stream.forumuser.ForumUser;
 
-import java.io.PipedOutputStream;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StreamMain {
     public static void main(String[] args) {
-        PoemBeautifier poemBeautifier = new PoemBeautifier();
-        String text1 = poemBeautifier.beautify("Beautifier text task",(text -> text.toUpperCase()));
-        System.out.println(text1);
+        Forum forum = new Forum();
 
-        String text2 = poemBeautifier.beautify("Beautifier text task",(text -> text.toLowerCase()));
-        System.out.println(text2);
+        Map<Integer, ForumUser> theResultUsers = forum.getList().stream()
+                .filter(s -> s.getSex() == 'M')
+                .filter(s -> s.getBirthDate().getYear() < 2001)
+                .filter(s -> s.getPostsCount() >= 1)
+                .collect(Collectors.toMap(ForumUser::getIdentificator, forumUser -> forumUser));
 
-        String text3 = poemBeautifier.beautify("Beautifier text task",(text -> "ABC" + text + "ABC"));
-        System.out.println(text3);
-
-        String text4 = poemBeautifier.beautify("Beautifier text task",(text -> "/" + text + "/"));
-        System.out.println(text4);
-
-        String text5 = poemBeautifier.beautify("Beautifier text task",(text -> text.substring(11, 16)));
-        System.out.println(text5);
-
-        String text6 = poemBeautifier.beautify("Beautifier text task",(text -> text + "."));
-        System.out.println(text6);
-
+        System.out.println("# elements: " + theResultUsers.size());             // [2]
+        theResultUsers.entrySet().stream()
+                .map(entry -> entry.getKey() + ": " + entry.getValue())                   // [3]
+                .forEach(System.out::println);
     }
 }
